@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../node_modules/.prisma/client" // "../generated/prisma" //
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Estimate {
+  id         String   @id @default(uuid())
+  title      String
+  sum        Int
+  profit     Boolean
+  categoryId String   @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  projectId  String   @map("projectId")
+  project    Project  @relation(fields: [projectId], references: [id])
+  userId     String   @map("user_id")
+  // userId     String   @map("user_id")
+  // user       User     @relation(fields: [userId], references: [id])
+
+  @@index([title])
+  @@map("estimates")
+}
+
+model Project {
+  id        String     @id @default(uuid())
+  title     String
+  status    String
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  estimates Estimate[]
+  userId    String     @map("user_id")
+  // userId    String     @map("user_id")
+  // user      User       @relation(fields: [userId], references: [id])
+
+  @@index([title])
+  @@map("projects")
+}
+
+model Category {
+  id        String     @id @default(uuid())
+  title     String
+  estimates Estimate[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@index([title])
+  @@map("categories")
+}
+
+model User {
+  id         String   @id @default(uuid())
+  firstName  String   @map("first_name")
+  lastName   String   @map("last_name")
+  middleName String   @map("middle_name")
+  hash       String   @map("password_hash")
+  email      String
+  role       Role     @default(USER)
+  // projects   Project[]
+  // estimates  Estimate[]
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@index([email])
+  @@map("users")
+}
+
+enum Role {
+  USER
+  ADMIN
+}

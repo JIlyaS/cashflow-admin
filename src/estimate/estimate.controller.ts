@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { EstimateService } from './estimate.service';
 import { CreateEstimateDto } from './dto/create-estimate.dto';
 import { UpdateEstimateDto } from './dto/update-estimate.dto';
 
-@Controller('estimate')
+@Controller('estimates')
 export class EstimateController {
   constructor(private readonly estimateService: EstimateService) {}
 
@@ -23,7 +31,10 @@ export class EstimateController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEstimateDto: UpdateEstimateDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateEstimateDto: UpdateEstimateDto,
+  ) {
     return this.estimateService.update(+id, updateEstimateDto);
   }
 
