@@ -1,15 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreateEstimateDto } from './dto/create-estimate.dto';
 import { UpdateEstimateDto } from './dto/update-estimate.dto';
+import { PrismaClientService } from 'src/shared/models';
 
 @Injectable()
 export class EstimateService {
+  constructor(private readonly prisma: PrismaClientService) {}
+
   create(createEstimateDto: CreateEstimateDto) {
     return 'This action adds a new estimate';
   }
 
   findAll() {
-    return `This action returns all estimate`;
+    return this.prisma.estimate.findMany();
+    // return `This action returns all estimate`;
   }
 
   findOne(id: number) {
