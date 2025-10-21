@@ -1,9 +1,9 @@
-import { Estimate } from './estimate.interface';
+// import { Estimate } from './estimate.interface';
 
 export interface Category {
   id?: string;
   title: string;
-  estimates: Estimate[];
+  // estimates: Estimate[];
   createdAt?: Date;
   updatedAt?: Date;
 }
